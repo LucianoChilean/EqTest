@@ -1,8 +1,35 @@
 const db      = require('../db/connection');
 const express = require('express');
 const cors    = require('cors');
-
-
+const path    = require('path');
+//Swagger
+const swaggerUI = require('swagger-ui-express');
+const swaggerJsDoc = require('swagger-jsdoc');
+const swaggerSpec = {
+    definition:{
+        openapi: "3.0.0",
+        info:{
+            title: "Test API",
+            version: "1.0.0",
+            contact:{
+                email: "mattensohn64@gmail.com"
+            }
+        },
+        servers:[{
+            url:"http://localhost:8080"
+        }],
+        components: {
+            securitySchemes: {
+                bearerAuth: {
+                    type: 'http',
+                    scheme: 'bearer',
+                    bearerFormat: 'JWT',
+                }
+            }
+        }
+    },
+    apis:[`${path.join(__dirname,"../routes/*.js")}`],
+};
 
 class Server{
 
@@ -14,6 +41,7 @@ class Server{
         usuarios: '/api/usuarios',
         auth:     '/api/auth',
         tickets:  '/api/tickets',
+        swagger:  '/api-doc'
        };
 
        this.connectDB();
@@ -45,6 +73,7 @@ class Server{
         this.app.use(this.paths.auth,require('../routes/auth'));
         this.app.use(this.paths.usuarios,require('../routes/usuarios'));
         this.app.use(this.paths.tickets,require('../routes/tickets'));
+        this.app.use(this.paths.swagger,swaggerUI.serve,swaggerUI.setup(swaggerJsDoc(swaggerSpec)));
 
 
     }

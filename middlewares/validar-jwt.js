@@ -4,9 +4,10 @@ const Usuario = require('../models/usuario');
 
 const validarJWT = async(req = request,res = response,next) => {
 
-    const token = req.header('Authorization');
+    var   auth       = req.header('Authorization');
+    const TokenSplit = auth.split(" ");
 
-  
+    const token = (TokenSplit[0] === 'Bearer') ? TokenSplit[1] : auth;
 
     if(!token){
         return res.status(401).json({
@@ -15,7 +16,7 @@ const validarJWT = async(req = request,res = response,next) => {
     }
 
     try {
-        const {uid} = jwt.verify(token, process.env.SECRETORPRIVATEKEY);
+        const {uid} = jwt.verify(token, 'test');
 
         //leer uusuario que corresponde al id
         const usuario = await Usuario.findByPk(uid);

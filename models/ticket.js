@@ -12,7 +12,7 @@ const Ticket = db.define('Ticket',{
     estatus:{
         type: DataTypes.BOOLEAN
     },
-    usuario_id:{
+    UsuarioId:{
         type: DataTypes.BIGINT
     }
 });

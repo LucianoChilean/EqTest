@@ -6,10 +6,29 @@ const Usuario = require('../models/usuario');
 
 const getUsuarios = async(req, res = response) =>{
 
+    /*const {page =2 ,size = 5} = req.query;
+
+    let options = {
+        limit: +size,
+        offset: (+page) * (+size)
+    }
+
+    const { count, rows } = await Usuario.findAndCountAll(options);*/
+
     const usuarios = await Usuario.findAll();
 
     res.json({usuarios});
 
+
+}
+
+const getUsuario = async(req, res = response) =>{
+
+    const {id} = req.params;
+
+    const usuario = await Usuario.findByPk(id);
+
+    res.json({usuario});
 
 }
 
@@ -66,7 +85,7 @@ const deleteUsuario = async(req, res = response) =>{
         })
     }
     
-    await usuario.update({estatus:false});
+    await usuario.destroy();
 
     res.json(usuario);
 
@@ -74,6 +93,7 @@ const deleteUsuario = async(req, res = response) =>{
 }
 
 module.exports = {getUsuarios,
+                  getUsuario,
                   postUsuario,
                   putUsuario,
                   deleteUsuario}
