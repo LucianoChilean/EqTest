@@ -53,6 +53,7 @@ class Server{
    async connectDB(){
      try {
         await db.authenticate();
+        await db.sync();
      }catch(e){
         throw new Error('error en conectar BD');
      }
@@ -88,4 +89,4 @@ class Server{
 }
 
 
-module.exports = Server;
+module.exports = Server; 
